@@ -1,0 +1,32 @@
+{
+  "name": "scanstock",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/samCarter506/ScanStock#readme",
+  "bugs": {
+    "url": "https://github.com/samCarter506/ScanStock/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samCarter506/ScanStock.git"
+  },
+  "license": "ISC",
+  "author": "Samuel Thamae",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+  "start": "node index.js",
+  "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "client-sessions": "^0.8.0",
+    "express": "^5.2.1",
+    "moment": "^2.30.1",
+    "mongoose": "^9.6.3",
+    "mongoose-bcrypt": "^1.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

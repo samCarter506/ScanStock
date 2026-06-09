@@ -1,0 +1,9 @@
+{
+    "Port" : 4000,
+    "SessionTimeoutMin": 20,
+     "mongoDB":{
+        "url":"mongodb://localhost:27017/ScanStock",
+        "useNewUrlParser" : true, 
+	"useUnifiedTopology": true 
+    }
+}
