@@ -1,22 +1,85 @@
-var mongoose = require('mongoose');
-var moment   = require('moment');
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const moment = require("moment");
 
-var Schema = mongoose.Schema
+const userSchema = new mongoose.Schema({
+  UserID: {
+    type: String,
+    required: true,
+    unique: true
+  },
 
-var userSchema = new Schema({
-  UserID         : {type: String, required: true, index: {unique: true}},
-  FirstName		 : {type: String, required: true},
-  LastName       : {type: String, required: true},
-  ConfirmedPassword:{type: Boolean, default: false},
-  Password       : {type: String, required: true, bcrypt: true },
-  CreateDate     : {type: String, default: moment(new Date()).format('YYYY-MM-DD HH:mm:ss')},
-  LastUpdate     : {type: String, default: moment(new Date()).format('YYYY-MM-DD HH:mm:ss')},
-  LastUpdateUser : {type: String, default: null },
-  UserGroup      : []
-}, { collection: 'SysUsers'})
+  FirstName: {
+    type: String,
+    required: true
+  },
 
-userSchema.plugin(require('mongoose-bcrypt'));
+  LastName: {
+    type: String,
+    required: true
+  },
 
-const User=mongoose.model('SysUsers', userSchema);
+  Password: {
+    type: String,
+    required: true
+  },
+
+  ConfirmedPassword: {
+    type: Boolean,
+    default: false
+  },
+
+  CreateDate: {
+    type: String,
+    default: () =>
+      moment().format("YYYY-MM-DD HH:mm:ss")
+  },
+
+  LastUpdate: {
+    type: String,
+    default: () =>
+      moment().format("YYYY-MM-DD HH:mm:ss")
+  },
+
+  LastUpdateUser: {
+    type: String,
+    default: null
+  },
+  UserGroup: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "SysUserRoles"
+    }]
+  },
+{
+  collection: "SysUsers"
+});
+
+userSchema.pre("save", async function () {
+
+  if (!this.isModified("Password")) {
+    return;
+  }
+
+  const salt = await bcrypt.genSalt(10);
+
+  this.Password = await bcrypt.hash(
+    this.Password,
+    salt
+  );
+});
+
+userSchema.methods.verifyPassword =
+  async function (password) {
+
+    return await bcrypt.compare(
+      password,
+      this.Password
+    );
+  };
+
+  const User = mongoose.model(
+  "SysUsers",
+  userSchema
+);
 
 module.exports = User;

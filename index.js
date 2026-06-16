@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   session({
     cookieName: "session",
-    secret: "ScanStock with you phone (scanner @@ )",
+    secret: require('./config/config.json').sessionKey,
     duration: config.SessionTimeoutMin * 60 * 1000,
     activeDuration: 5 * 60 * 1000,
     httpOnly: true,
@@ -48,5 +48,35 @@ mongoose.connection.on("disconnected", () => {
 mongoose.connection.on("error", (err) => {
   console.log("MongoDB Error:", err);
 });
+
+/*=======================Routes========================*/
+const users = require('./routes/UsersRouter');
+const userGroup = require('./routes/UserGroupsRouter')
+const account = require('./routes/AccountRouter')
+const category = require('./routes/CategoryRouter')
+const location = require('./routes/LocationRouter')
+const product = require('./routes/ProductRouter')
+const supplier = require('./routes/SupplierRouter')
+const customer = require('./routes/CustomerRouter')
+const Receipt  = require('./routes/ReceiptRouter')
+const ReceiptLine = require('./routes/ReceiptLineRouter')
+const OutboundLine = require('./routes/OutboundLineRouter')
+const Outbound    = require('./routes/OutboundRouter')
+const Report      = require('./routes/ReportRouter')
+
+app.use('/api/users',users);
+app.use('/api/roles', userGroup);
+app.use('/api/account',account);
+app.use('/api/category',category);
+app.use('/api/location',location);
+app.use('/api/product',product)
+app.use('/api/supplier',supplier)
+app.use('/api/customer',customer)
+app.use('/api/receipt',Receipt)
+app.use('/api/receiptline',ReceiptLine)
+app.use('/api/outbound',Outbound)
+app.use('/api/outboundline',OutboundLine)
+app.use('/api/report',Report)
+
 
 startServer();

@@ -1,9 +1,11 @@
 {
     "Port" : 4000,
     "SessionTimeoutMin": 20,
+    "sessionKey": "ScanStock with you phone (scanner @@ )",
      "mongoDB":{
         "url":"mongodb://localhost:27017/ScanStock",
         "useNewUrlParser" : true, 
 	"useUnifiedTopology": true 
-    }
+    },
+    "JwtSecret":"This is the jwt string for scanstock"
 }
