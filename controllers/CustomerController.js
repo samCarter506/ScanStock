@@ -40,6 +40,7 @@ exports.getCustomer = async (req, res)=>{
 
 exports.CreateCustomer = async (req,res)=>{
     try{
+       
         const checkCustomer= await Customer.findOne({CustomerCode:req.body.supplierCode})
 
         if(checkCustomer)
@@ -83,7 +84,8 @@ exports.CreateCustomer = async (req,res)=>{
 
 exports.UpdateCustomer= async (req,res)=>{
      try{
-        const checkCustomer= await Customer.findOne({CustomerCode:req.body.customerCode})
+         console.log(req.params)
+        const checkCustomer= await Customer.findOne({CustomerCode:req.params.id})
 
         if(!checkCustomer)
         {

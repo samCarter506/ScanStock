@@ -157,7 +157,29 @@ exports.UpdateOutboundLine = async (req, res) => {
 
     }
 };
+exports.GetOutboundLinesByOutbound = async (req, res) => {
+    try {
 
+        const lines = await OutboundLine.find({
+            OutboundId: req.params.id
+        })
+        .populate("ProductId")
+        .populate("LocationId");
+
+        return res.status(200).json({
+            success: true,
+            data: lines
+        });
+
+    } catch (err) {
+
+        return res.status(500).json({
+            success: false,
+            message: err.message
+        });
+
+    }
+};
 exports.CreateOutboundLine = async (req, res) => {
     try {
 

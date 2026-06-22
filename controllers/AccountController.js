@@ -4,7 +4,7 @@ const JwtSecret = require('../config/config.json').JwtSecret
 
 exports.Login = async (req,res)=>{
     try{
-       // console.log(req.body)
+        console.log(req.body)
          const userExist = await User.findOne(
               { UserID: req.body.userId}
             );

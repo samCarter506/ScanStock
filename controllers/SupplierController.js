@@ -1,11 +1,12 @@
 const Supplier = require('../db_schema/supplier')
 
+
 exports.GetSuppliers = async (req,res)=>{
     try{
-        console.log(req)
+       
         const result = await Supplier.find({})
         
-        return res.status(200).json({})
+        return res.status(200).json(result)
     }catch(err)
     {
         return res.status(500).json({
@@ -14,6 +15,7 @@ exports.GetSuppliers = async (req,res)=>{
         })
     }
 }
+
 
 exports.GetSupplier = async (req, res) => {
     try {

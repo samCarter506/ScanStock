@@ -205,48 +205,61 @@ exports.DeleteProduct = async (req,res)=>{
 }
 
 exports.GenerateBarcode = async (req, res) => {
-    try {
+  try {
+    console.log("here now")
+    const product = await Product.findOne({
+      Barcode: req.params.barcode
+    });
 
-        const product = await Product.findOne({
-            Barcode: req.params.barcode
-        });
-
-        if (!product) {
-            return res.status(404).json({
-                success: false,
-                message: "Product not found"
-            });
-        }
-
-        const png = await bwipjs.toBuffer({
-            bcid: "code128",
-            text: product.Barcode,
-            scale: 3,
-            height: 10,
-            includetext: true,
-            textxalign: "center"
-        });
-
-        const filePath = path.join(
-            __dirname,
-            "../barcodes",
-            `${product.Barcode}.png`
-        );
-
-        fs.writeFileSync(filePath, png);
-
-        return res.status(200).json({
-            success: true,
-            message: "Barcode generated",
-            file: filePath
-        });
-
-    } catch (err) {
-
-        return res.status(500).json({
-            success: false,
-            message: err.message
-        });
-
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found"
+      });
     }
+
+    const barcodeFolder = path.join(
+      __dirname,
+      "../barcodes"
+    );
+
+    if (!fs.existsSync(barcodeFolder)) {
+      fs.mkdirSync(barcodeFolder, {
+        recursive: true
+      });
+    }
+
+    const fileName = `${product.Barcode}.png`;
+
+    const filePath = path.join(
+      barcodeFolder,
+      fileName
+    );
+
+    const png = await bwipjs.toBuffer({
+      bcid: "code128",
+      text: product.Barcode,
+      scale: 3,
+      height: 10,
+      includetext: true,
+      textxalign: "center"
+    });
+
+    fs.writeFileSync(filePath, png);
+
+    return res.status(200).json({
+      success: true,
+      message: "Barcode generated successfully",
+      barcodeUrl: `/barcodes/${fileName}`,
+      product: {
+        Barcode: product.Barcode,
+        ProductName: product.ProductName
+      }
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: err.message
+    });
+  }
 };

@@ -1,12 +1,23 @@
-const OutboundLine = require('../controllers/OutboundLineController')
-const Auth = require('../middleware/JwtService')
-const express = require('express')
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 
-router.get('/',Auth,OutboundLine.GetOutboundLines)
-      .get('/:id',Auth,OutboundLine.GetOutboundLine)
-      .post('/',Auth,OutboundLine.CreateOutboundLine)
-      .put('/:id',Auth,OutboundLine.UpdateOutboundLine)
-      .delete('/:id',Auth,OutboundLine.DeleteOutboundLine)
+const Auth = require("../middleware/JwtService");
+const OutboundLine = require("../controllers/OutboundLineController");
 
-module.exports = router
+router.get("/", Auth, OutboundLine.GetOutboundLines);
+
+router.get(
+    "/outbound/:id",
+    Auth,
+    OutboundLine.GetOutboundLinesByOutbound
+);
+
+router.get("/:id", Auth, OutboundLine.GetOutboundLine);
+
+router.post("/", Auth, OutboundLine.CreateOutboundLine);
+
+router.put("/:id", Auth, OutboundLine.UpdateOutboundLine);
+
+router.delete("/:id", Auth, OutboundLine.DeleteOutboundLine);
+
+module.exports = router;

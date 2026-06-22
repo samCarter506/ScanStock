@@ -29,11 +29,13 @@ exports.GetReceiptLine = async (req, res) => {
     try {
 
         const receiptLine =
-            await ReceiptLine.findById(req.params.id)
+            await ReceiptLine.find({
+            ReceiptId: req.params.id
+        })
                 .populate("ReceiptId")
                 .populate("ProductId")
                 .populate("LocationId");
-
+        console.log(receiptLine)
         if (!receiptLine) {
             return res.status(404).json({
                 success: false,
@@ -52,7 +54,55 @@ exports.GetReceiptLine = async (req, res) => {
 
     }
 };
+exports.GetReceiptLineById = async (req, res) => {
+    try {
+        const receiptLine = await ReceiptLine.findById(req.params.id)
+            .populate("ReceiptId")
+            .populate("ProductId")
+            .populate("LocationId");
 
+        if (!receiptLine) {
+            return res.status(404).json({
+                success: false,
+                message: "Receipt line not found"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: receiptLine
+        });
+
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: err.message
+        });
+    }
+};
+
+
+exports.GetReceiptLinesByReceipt = async (req, res) => {
+    try {
+        const receiptLines = await ReceiptLine.find({
+            ReceiptId: req.params.receiptId
+        })
+            .populate("ReceiptId")
+            .populate("ProductId")
+            .populate("LocationId");
+
+        return res.status(200).json({
+            success: true,
+            data: receiptLines
+        });
+
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: err.message
+        });
+    }
+};
 exports.CreateReceiptLine = async (req, res) => {
     try {
 
