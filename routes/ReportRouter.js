@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const reportController =require("../controllers/reportController");
+const reportController =require("../controllers/ReportController");
 
 router.get("/",reportController.GetReports)
         .get("/:id",reportController.GetReport)
