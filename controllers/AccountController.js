@@ -1,10 +1,10 @@
 const User = require('../db_schema/user');
 const jwt = require("jsonwebtoken");
-const JwtSecret = require('../config/config.json').JwtSecret
+
 
 exports.Login = async (req,res)=>{
     try{
-        console.log(req.body)
+       
          const userExist = await User.findOne(
               { UserID: req.body.userId}
             );
@@ -34,7 +34,7 @@ exports.Login = async (req,res)=>{
             "LastName":userExist.LastName,
             "UserGroup":userExist.UserGroup
         },
-        JwtSecret,
+        process.env.JWT_SECRET,
          {
              expiresIn: "8h"
          }

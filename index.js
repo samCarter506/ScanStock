@@ -8,6 +8,7 @@ const cors = require('cors')
 const app = express();
 const PORT = process.env.PORT || 4000;
 const DB_URL = process.env.MONGODB_URI;
+
 const SYS_NAME = "ScanStock";
 
 
@@ -24,21 +25,23 @@ if (!DB_URL) {
 }
 
 const allowedOrigins = [
-  "http://localhost:3000",
-  "https://scanstock-portal.onrender.com"
+    "http://localhost:3000",
+    "https://scanstock-portal.onrender.com"
 ];
 
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
+    origin(origin, callback) {
 
-    return callback(
-      new Error(`CORS blocked for origin: ${origin}`)
-    );
-  },
-  credentials: false
+        if (!origin) {
+            return callback(null, true);
+        }
+
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+
+        callback(new Error("Not allowed by CORS"));
+    }
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -99,6 +102,7 @@ const ReceiptLine = require('./routes/ReceiptLineRouter')
 const OutboundLine = require('./routes/OutboundLineRouter')
 const Outbound = require('./routes/OutboundRouter')
 const Report = require('./routes/ReportRouter')
+const Dashboard = require('./routes/DashboardRouter')
 
 app.use('/api/users', users);
 app.use('/api/roles', userGroup);
@@ -113,6 +117,7 @@ app.use('/api/receiptline', ReceiptLine)
 app.use('/api/outbound', Outbound)
 app.use('/api/outboundline', OutboundLine)
 app.use('/api/report', Report)
+app.use('/api/dashboard',Dashboard)
 
 
 
