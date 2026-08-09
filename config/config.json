@@ -4,7 +4,7 @@
     "JwtSecret":"This is the jwt string for scanstock",
     "sessionKey": "ScanStock with you phone (scanner @@ )",
      "mongoDB":{
-        "url":"mongodb://localhost:27017/ScanStock",
+        "url":"mongodb+srv://Mercury13430:12345TREWQ@cluster0.7triwkj.mongodb.net/ScanStock",
         "useNewUrlParser" : true, 
 	"useUnifiedTopology": true 
     }

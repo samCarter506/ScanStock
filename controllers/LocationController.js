@@ -47,6 +47,8 @@ exports.CreateLocation = async (req,res)=>{
                 success:false
             })
         }
+        const checkDigit = Math.random(1000,99999)
+        console.log(">>>>>>>>",checkDigit)
         const location = new Location({
             LocationCode:req.body.locationCode,
             LocationName:req.body.locationName,

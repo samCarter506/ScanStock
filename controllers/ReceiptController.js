@@ -1,10 +1,11 @@
 const Receipt = require('../db_schema/Receipt')
 const Supplier = require('../db_schema/supplier')
+const moment = require('moment')
 
 exports.GetReceipts = async (req, res) => {
     try {
         const results = await Receipt.find({});
-
+     
         return res.status(200).json(results)
 
     } catch (err) {
@@ -38,26 +39,22 @@ exports.GetReceipt = async (req, res) => {
 
 exports.CreateReceipt = async (req, res) => {
     try {
+     
         const checkReceipt = await Receipt.findOne({ ReceiptNumber: req.body.receiptNumber })
         const checkSupplier = await Supplier.findOne({ SupplierCode: req.body.supplierCode })
-
+        const Invoice = "INV"+moment().format("YYYYMMDD")
         if (checkReceipt) {
             return res.status(400).json({
                 message: "Receipt already exist",
                 success: false
             })
         }
-        if (!checkSupplier) {
-            return res.status(400).json({
-                message: "Supplier already exist",
-                success: false
-            })
-        }
+       
 
         const receipt = new Receipt({
             ReceiptNumber: req.body.receiptNumber,
             SupplierId: checkSupplier._id,
-            InvoiceNumber: req.body.invoiceNumber,
+            InvoiceNumber: Invoice,
             Notes: req.body.notes,
             TotalItems: req.body.totalItems
         })

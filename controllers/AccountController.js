@@ -4,10 +4,10 @@ const jwt = require("jsonwebtoken");
 
 exports.Login = async (req,res)=>{
     try{
-       
-         const userExist = await User.findOne(
-              { UserID: req.body.userId}
-            );
+        
+         const userExist = await User.findOne({
+         UserID: req.body.userId
+        });
        
         if(!userExist)
         {

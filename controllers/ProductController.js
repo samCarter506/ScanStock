@@ -123,9 +123,10 @@ exports.CreateProduct = async (req,res)=>{
 
 exports.UpdateProduct = async (req,res)=>{
     try{
-        const checkExist= await Product.findOneAndUpdate({Barcode:req.body.barcode})
-        const checkCategory = await Category.findOne({CategoryName:req.body.category})
-        const checkLocation = await Location.findOne({LocationCode:req.body.locationCode})
+        const checkExist= await Product.findOneAndUpdate({Barcode:req.params.id})
+        console.log(checkExist)
+        const checkCategory = await Category.findOne({_id:req.body.CategoryId})
+        const checkLocation = await Location.findOne({LocationName:req.body.LocationId})
         if(!checkExist)
         {
             return res.status(400).json({
@@ -159,7 +160,7 @@ exports.UpdateProduct = async (req,res)=>{
                 ExpiryDate: req.body.expiryDate,
                 CategoryId: checkCategory._id,
                 Locations:[{
-                    LocationId:checkLocation._id,
+                    LocationId:req.body.LocationId,
                     Quantity: req.body.quantity,
                     MinimumStock: req.body.minimumStock
                  }]
@@ -181,8 +182,10 @@ exports.UpdateProduct = async (req,res)=>{
 }
 
 exports.DeleteProduct = async (req,res)=>{
+
     try{
-        const result = await Product.findOneAndDelete({Barcode: req.Param.barcode})
+       
+        const result = await Product.findOneAndDelete({_id:req.params.id})
         if(!result)
         {
             return res.status(400).json({

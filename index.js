@@ -8,7 +8,7 @@ const cors = require('cors')
 const app = express();
 const PORT = process.env.PORT || 4000;
 const DB_URL = process.env.MONGODB_URI;
-
+console.log(DB_URL)
 const SYS_NAME = "ScanStock";
 
 
@@ -103,6 +103,8 @@ const OutboundLine = require('./routes/OutboundLineRouter')
 const Outbound = require('./routes/OutboundRouter')
 const Report = require('./routes/ReportRouter')
 const Dashboard = require('./routes/DashboardRouter')
+const TaskAssignment = require("./routes/TaskRouter");
+
 
 app.use('/api/users', users);
 app.use('/api/roles', userGroup);
@@ -118,6 +120,7 @@ app.use('/api/outbound', Outbound)
 app.use('/api/outboundline', OutboundLine)
 app.use('/api/report', Report)
 app.use('/api/dashboard',Dashboard)
+app.use("/api/tasks", TaskAssignment);
 
 
 

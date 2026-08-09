@@ -149,7 +149,8 @@ exports.CreateReceiptLine = async (req, res) => {
                 message: "Location not found"
             });
         }
-
+        console.log(checkLocation)
+        const batchNumber = checkLocation.Aisle +moment().format("YYYYMMDD")
         const receiptLine =
             await ReceiptLine.create({
                 ReceiptId: checkReceipt._id,
@@ -157,7 +158,7 @@ exports.CreateReceiptLine = async (req, res) => {
                 LocationId: checkLocation._id,
                 QuantityReceived: req.body.quantityReceived,
                 CostPrice: req.body.costPrice,
-                BatchNumber: req.body.batchNumber,
+                BatchNumber:batchNumber,
                 ExpiryDate: req.body.expiryDate
             });
 
